@@ -1,28 +1,28 @@
 /**
  * Created by Hans Dulimarta.
  */
-let modelMat = mat4.create();
-let canvas, paramGroup;
+var modelMat = mat4.create();
+var canvas, paramGroup;
 var currSelection = 0;
 var currRotationAxis = "rotx";
-let posAttr, colAttr, modelUnif;
-let gl;
-let obj;
+var posAttr, colAttr, modelUnif;
+var gl;
+var obj;
 
 function main() {
   canvas = document.getElementById("gl-canvas");
 
   /* setup event listener for drop-down menu */
-  let menu = document.getElementById("menu");
+  var menu = document.getElementById("menu");
   menu.addEventListener("change", menuSelected);
 
   /* setup click listener for th "insert" button */
-  let button = document.getElementById("insert");
+  var button = document.getElementById("insert");
   button.addEventListener("click", createObject);
 
   /* setup click listener for the radio buttons (axis of rotation) */
-  let radioGroup = document.getElementsByName("rotateGroup");
-  for (let r of radioGroup) {
+  var radioGroup = document.getElementsByName("rotateGroup");
+  for (var r of radioGroup) {
     r.addEventListener('click', rbClicked);
   }
 
@@ -87,11 +87,12 @@ function createObject() {
   mat4.identity(modelMat);
   switch (currSelection) {
     case 0:
-      let height = document.getElementById("cone-height").valueAsNumber;
-      let radius = document.getElementById("cone-radius").valueAsNumber;
-      let subDiv = document.getElementById("cone-subdiv").valueAsNumber;
+      var height = document.getElementById("cone-height").valueAsNumber;
+      var radius = document.getElementById("cone-radius").valueAsNumber;
+      var subDiv = document.getElementById("cone-subdiv").valueAsNumber;
+      var stacks = document.getElementById("stacks").valueAsNumber;
       console.log ("Cylinder radius: " + radius + " height: " + height + " sub division: " + subDiv);
-      obj = new Cone(gl, radius, height, subDiv);
+      obj = new Cone(gl, radius, height, subDiv, stacks);
       break;
     case 1:
       /* TODO: obtain user input parameters and create the object */
@@ -100,9 +101,9 @@ function createObject() {
 }
 
 function resizeWindow() {
-  let w = 0.98 * window.innerWidth;
-  let h = 0.6 * window.innerHeight;
-  let size = Math.min(0.98 * window.innerWidth, 0.65 * window.innerHeight);
+  var w = 0.98 * window.innerWidth;
+  var h = 0.6 * window.innerHeight;
+  var size = Math.min(0.98 * window.innerWidth, 0.65 * window.innerHeight);
   /* keep a square viewport */
   canvas.width = size;
   canvas.height = size;
@@ -110,7 +111,7 @@ function resizeWindow() {
 }
 
 function menuSelected(ev) {
-  let sel = ev.currentTarget.selectedIndex;
+  var sel = ev.currentTarget.selectedIndex;
   paramGroup[currSelection].hidden = true;
   paramGroup[sel].hidden = false;
   currSelection = sel;
