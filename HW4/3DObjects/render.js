@@ -87,15 +87,37 @@ function createObject() {
   mat4.identity(modelMat);
   switch (currSelection) {
     case 0:
-      var height = document.getElementById("cone-height").valueAsNumber;
-      var radius = document.getElementById("cone-radius").valueAsNumber;
-      var subDiv = document.getElementById("cone-subdiv").valueAsNumber;
-      var stacks = document.getElementById("stacks").valueAsNumber;
-      console.log ("Cylinder radius: " + radius + " height: " + height + " sub division: " + subDiv);
-      obj = new Cone(gl, radius, height, subDiv, stacks);
+      height = document.getElementById("cone-height").valueAsNumber;
+      radiusBottom = document.getElementById("cone-radius").valueAsNumber;
+      subDiv = document.getElementById("cone-subdiv").valueAsNumber;
+      vertStacks = document.getElementById("vert-stacks").valueAsNumber;
+      //console.log ("Cone radius: " + radiusBottom + " height: " + height + " sub division: " + subDiv + " vertical stacks: " + vertStacks);
+      obj = new Cone(gl, radiusBottom, height, subDiv, vertStacks);
       break;
     case 1:
       /* TODO: obtain user input parameters and create the object */
+      height = document.getElementById("trunc-cone-height").valueAsNumber;
+      radiusBottom = document.getElementById("trunc-cone-radius-bottom").valueAsNumber;
+      radiusTop = document.getElementById("trunc-cone-radius-top").valueAsNumber;
+      subDiv = document.getElementById("trunc-cone-subdiv").valueAsNumber;
+      vertStacks = document.getElementById("trunc-cone-stacks").valueAsNumber;
+      //console.log ("Cylinder radius bottom: " + radiusBottom + " radius top:" + radiusTop + " height: " + height + " sub division: " + subDiv + " stacks: " + vertStacks);
+      obj = new TruncCone(gl, radiusBottom, radiusTop, height, subDiv, vertStacks);
+      break;
+    case 2:
+      /* TODO: obtain user input parameters and create the object */
+      height = document.getElementById("cube-height").valueAsNumber;
+      width = document.getElementById("cube-width").valueAsNumber;
+      subDiv = document.getElementById("cube-subdiv").valueAsNumber;
+      obj = new Cube(gl, height, width, subDiv);
+      break;
+    case 3:
+      /* TODO: obtain user input parameters and create the object */
+      radiusBottom = document.getElementById("sphere-radius").valueAsNumber;
+      latLines = document.getElementById("sphere-lat").valueAsNumber;
+      longLines = document.getElementById("sphere-long").valueAsNumber;
+      console.log ("Sphere radius: " + radiusBottom + " lat lines: " + latLines + " long lines: " + longLines);
+      obj = new Sphere(gl, radiusBottom, latLines, longLines);
       break;
   }
 }
