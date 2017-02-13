@@ -8,11 +8,11 @@ class TruncCone {
      * @param {Number} radiusBottom   radius of the cone base
      * @param {Number} radiusTop      radius of the cone top
      * @param {Number} height         height of the cone
-     * @param {Number} subDiv         number of radial subdivision of the cone base
+     * @param {Number} div         number of radial division of the cone base
      * @param {vec3}   col1           color #1 to use
      * @param {vec3}   col2           color #2 to use
      */
-    constructor (gl, radiusBottom, radiusTop, height, subDiv, stacks = 1, col1, col2) {
+    constructor (gl, radiusBottom, radiusTop, height, div, stacks = 1, col1, col2) {
         /* if colors are undefined, generate random colors */
         if (typeof col1 === "undefined") col1 = vec3.fromValues(Math.random(), Math.random(), Math.random());
         if (typeof col2 === "undefined") col2 = vec3.fromValues(Math.random(), Math.random(), Math.random());
@@ -24,7 +24,6 @@ class TruncCone {
          in the following loop we pack both position and color
          so each tuple (x,y,z,r,g,b) describes the properties of a vertex
          */
-
         for(let i = 0; i <= stacks; i ++) {
             let stackHeight = height * (i/stacks);
             let stackRadius = radiusBottom - (i * ((radiusBottom - radiusTop) / stacks));
@@ -34,8 +33,8 @@ class TruncCone {
                 vertices.push(randColor[0], randColor[1], randColor[2]);
             }
 
-            for (let k = 0; k < subDiv; k++) {
-                let angle = k * 2 * Math.PI / subDiv;
+            for (let k = 0; k < div; k++) {
+                let angle = k * 2 * Math.PI / div;
                 let x = stackRadius * Math.cos (angle);
                 let y = stackRadius * Math.sin (angle);
 
@@ -56,10 +55,10 @@ class TruncCone {
         let bottomIndex = [];
         bottomIndex.push(0);
         //generate bottom of stack
-        for(let j = subDiv; j >= 1; j--) {
+        for(let j = div; j >= 1; j--) {
             bottomIndex.push(j);
         }
-        bottomIndex.push(subDiv);
+        bottomIndex.push(div);
 
         this.bottomIdxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bottomIdxBuff);
@@ -67,12 +66,24 @@ class TruncCone {
 
         this.indices.push({"primitive": gl.TRIANGLE_FAN, "buffer": this.bottomIdxBuff, "numPoints": bottomIndex.length});
 
+        //generate top of stack
+        let topIndex = [];
+        topIndex.push((stacks * div) + 1);
+        for(let j = 2; j < div + 2; j++) {
+            topIndex.push(j + (stacks * div));
+        }
+        topIndex.push((stacks * div) + 2);
+
+        this.topIdxBuff = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.topIdxBuff);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint16Array.from(topIndex), gl.STATIC_DRAW);
+
         //generate side of stacks
         for(let i = 0; i < stacks; i++) {
             let sideIndex = [];
-            for(let j = 1; j <= subDiv; j++) {
-                let nextLevel = ((i  + 1) * subDiv) + j;
-                let currentLevel = (i * subDiv) + j;
+            for(let j = 1; j <= div; j++) {
+                let nextLevel = ((i  + 1) * div) + j;
+                let currentLevel = (i * div) + j;
 
                 if(i === stacks - 1) {
                     nextLevel++;
@@ -80,8 +91,8 @@ class TruncCone {
                 sideIndex.push(nextLevel, currentLevel);
             }
 
-            let nextLevelLast = ((i  + 1) * subDiv) + 1;
-            let currentLevelLast = (i * subDiv) + 1;
+            let nextLevelLast = ((i  + 1) * div) + 1;
+            let currentLevelLast = (i * div) + 1;
 
             if(i === stacks - 1) {
                 nextLevelLast++;
@@ -94,19 +105,6 @@ class TruncCone {
             gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint16Array.from(sideIndex), gl.STATIC_DRAW);
             this.indices.push({"primitive": gl.LINE_STRIP, "buffer": this.sideIdxBuff, "numPoints": sideIndex.length});
         }
-
-
-        //generate top of stack
-        let topIndex = [];
-        topIndex.push((stacks * subDiv) + 1);
-        for(let j = 2; j < subDiv + 2; j++) {
-            topIndex.push(j + (stacks * subDiv));
-        }
-        topIndex.push((stacks * subDiv) + 2);
-
-        this.topIdxBuff = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.topIdxBuff);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint16Array.from(topIndex), gl.STATIC_DRAW);
 
         this.indices.push({"primitive": gl.TRIANGLE_FAN, "buffer": this.topIdxBuff, "numPoints": topIndex.length});
     }

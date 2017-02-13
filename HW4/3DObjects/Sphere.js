@@ -5,10 +5,9 @@ class Sphere {
     /**
      * Create a 3D Sphere with tip at the Z+ axis and base on the XY plane
      * @param {Object} gl             the current WebGL context
-     * @param {Number} radiusBottom   radius of the cone base
-     * @param {Number} radiusBottom   radius of the cone base
-     * @param {Number} height         height of the cone
-     * @param {Number} subDiv         number of radial subdivision of the cone base
+     * @param {Number} radius         radius of the circle
+     * @param {Number} LatLines       Number of latitude lines to be drawn
+     * @param {Number} LongLines      Number of longitude lines to be drawn
      * @param {vec3}   col1           color #1 to use
      * @param {vec3}   col2           color #2 to use
      */
@@ -52,21 +51,21 @@ class Sphere {
 
         this.indices = [];
 
-        let indexData = [];
+        let index = [];
         //generate side of stacks
         for(let i = 0; i < latLines; i ++) {
             for(let j = 0; j < longLines; j++) {
                 let first = (i * (longLines + 1)) + j;
                 let second = first + longLines + 1;
-                indexData.push(first, second, first + 1);
-                indexData.push(second, second + 1, first + 1);
+                index.push(first, second, first + 1);
+                index.push(second, second + 1, first + 1);
             }
         }
 
         this.idxBuff = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.idxBuff);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint16Array.from(indexData), gl.STATIC_DRAW);
-        this.indices.push({"primitive": gl.LINE_STRIP, "buffer": this.idxBuff, "numPoints": indexData.length});
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Uint16Array.from(index), gl.STATIC_DRAW);
+        this.indices.push({"primitive": gl.LINE_STRIP, "buffer": this.idxBuff, "numPoints": index.length});
     }
 
     /**
