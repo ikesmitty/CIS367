@@ -1,91 +1,137 @@
 class Cube {
-    constructor (subDiv) {
+    constructor (gl, subDiv, col1, col2) {
 
         /* if colors are undefined, generate random colors */
         if (typeof col1 === "undefined") col1 = vec3.fromValues(Math.random(), Math.random(), Math.random());
         if (typeof col2 === "undefined") col2 = vec3.fromValues(Math.random(), Math.random(), Math.random());
         var randColor = vec3.create();
-        var vertices = [];
         this.vbuff = gl.createBuffer();
 
-        //vertices.push(0,0,height); /* tip of cone */
-        //vec3.lerp (randColor, col1, col2, Math.random()); /* linear interpolation between two colors */
-        //vertices.push(randColor[0], randColor[1], randColor[2]);
+        this.cubeVerticesBuffer = gl.createBuffer();
 
-        var vertices = [
-            // Front face
-            -1.0, -1.0,  1.0,
-            1.0, -1.0,  1.0,
-            1.0,  1.0,  1.0,
-            -1.0,  1.0,  1.0,
 
-            // Back face
-            -1.0, -1.0, -1.0,
-            -1.0,  1.0, -1.0,
-            1.0,  1.0, -1.0,
-            1.0, -1.0, -1.0,
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVerticesBuffer);
 
-            // Top face
-            -1.0,  1.0, -1.0,
-            -1.0,  1.0,  1.0,
-            1.0,  1.0,  1.0,
-            1.0,  1.0, -1.0,
+        var vertices = [];
+        // Front face
+        vertices.push(-0.3, -0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(0.3, -0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(0.3,  0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(-0.3,  0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+
+        // Back face
+        vertices.push(-0.3, -0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(-0.3,  0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(0.3,  0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(0.3, -0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+
+        // Top face
+        vertices.push(-0.3,  0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(-0.3,  0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(0.3,  0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(0.3,  0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
 
             // Bottom face
-            -1.0, -1.0, -1.0,
-            1.0, -1.0, -1.0,
-            1.0, -1.0,  1.0,
-            -1.0, -1.0,  1.0,
+        vertices.push(-0.3, -0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(0.3, -0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(0.3, -0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(-0.3, -0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
 
             // Right face
-            1.0, -1.0, -1.0,
-            1.0,  1.0, -1.0,
-            1.0,  1.0,  1.0,
-            1.0, -1.0,  1.0,
+        vertices.push(0.3, -0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(0.3,  0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(0.3,  0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(0.3, -0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
 
             // Left face
-            -1.0, -1.0, -1.0,
-            -1.0, -1.0,  1.0,
-            -1.0,  1.0,  1.0,
-            -1.0,  1.0, -1.0
-        ];
+        vertices.push(-0.3, -0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(-0.3, -0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(-0.3,  0.3,  0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
+        vertices.push(-0.3,  0.3, -0.3);
+        vec3.lerp (randColor, col1, col2, Math.random());
+        vertices.push(randColor[0], randColor[1], randColor[2]);
 
-        var generatedColors = [];
-
-        for (var j = 0; j < 6; j++) {
-            var c = colors[j];
-
-            for (var i = 0; i < 4; i++) {
-                generatedColors = generatedColors.concat(c);
-            }
-        }
-
-        var cubeVerticesColorBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesColorBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(generatedColors), gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vbuff);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
         this.cubeVerticesIndexBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVerticesIndexBuffer);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVerticesIndexBuffer);
 
         var cubeVertexIndices = [
-            0,  1,  2,      0,  2,  3,    // front
-            4,  5,  6,      4,  6,  7,    // back
-            8,  9,  10,     8,  10, 11,   // top
-            12, 13, 14,     12, 14, 15,   // bottom
-            16, 17, 18,     16, 18, 19,   // right
-            20, 21, 22,     20, 22, 23    // left
+            0,  1,  2,      2, 0, 3,    // front
+            9, 10, 8,     8,  11, 10,   // top
+            18, 19, 16,   18, 17, 16,        // right
+            7, 6, 5,       7, 4, 5,          // back
+            23, 20, 22,     22, 21, 20,    // left
+            12, 13, 14,     12, 15, 14   // bottom
         ];
 
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
             new Uint16Array(cubeVertexIndices), gl.STATIC_DRAW);
 
-
+        this.indices = [
+            {"primitive": gl.TRIANGLE_STRIP, "buffer": this.cubeVerticesIndexBuffer, "numPoints": cubeVertexIndices.length}
+        ];
     }
 
     draw(vertexAttr, colorAttr, modelUniform, coordFrame) {
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVerticesIndexBuffer);
-        gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
+        gl.uniformMatrix4fv(modelUniform, false, coordFrame);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vbuff);
+        gl.vertexAttribPointer(vertexAttr, 3, gl.FLOAT, false, 24, 0); /* (x,y,z) begins at offset 0 */
+        gl.vertexAttribPointer(colorAttr, 3, gl.FLOAT, false, 24, 12); /* (r,g,b) begins at offset 12 */
+
+        for (var k = 0; k < this.indices.length; k++) {
+            var obj = this.indices[k];
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.buffer);
+            gl.drawElements(obj.primitive, obj.numPoints, gl.UNSIGNED_SHORT, 0);
+        }
+
     }
-}/**
- * Created by dannyd1221 on 2/13/2017.
- */cf
+}
