@@ -119,6 +119,16 @@ function createObject() {
       console.log ("Sphere radius: " + radiusBottom + " lat lines: " + latLines + " long lines: " + longLines);
       obj = new Sphere(gl, radiusBottom, latLines, longLines);
       break;
+      case 6:
+        /* TODO: obtain user input parameters and create the object */
+          innerRadius = document.getElementById("ring-outer-radius").valueAsNumber;
+          outerRadius = document.getElementById("ring-inner-radius").valueAsNumber;
+          vertStacks = document.getElementById("ring-stacks").valueAsNumber;
+          height = document.getElementById("ring-height").valueAsNumber;
+          divs = document.getElementById("ring-subdiv").valueAsNumber;
+          //console.log ("Sphere radius: " + radiusBottom + " lat lines: " + latLines + " long lines: " + longLines);
+          obj = new Ring(gl, innerRadius, outerRadius, height, vertStacks, divs);
+          break;
   }
 }
 

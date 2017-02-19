@@ -11,6 +11,7 @@
   <script src="Cube.js"></script>
   <script src="Sphere.js"></script>
   <script src="render.js"></script>
+  <script src="Ring.js"></script>
   <style>
     #controls {
       padding: 16px;
@@ -26,6 +27,7 @@
   </style>
 </head>
 <body onload="main()">
+<p>Danny DeRuiter and Isaac Smith</p>
 <div id="controls">
 
   <select id="menu">
@@ -83,7 +85,12 @@
   </div>
   <div class="param-group" hidden>
     Ring parameters:
-    <!-- TODO: add your input tags here -->
+    <li>Inner Radius 0.2 <input id="ring-inner-radius" type="range" min="0.0" max="0.9" step="0.05" value="0.3"> 0.9</li>
+    <li>Outer Radius 0.2 <input id="ring-outer-radius" type="range" min="0.2" max="0.9" step="0.05" value="0.5"> 0.9</li>
+    <li>Height 0.2<input id="ring-height" type="range" min="0.2" max="0.9" step="0.05" value="0.9"> 100</li>
+    <li>stacks 1 <input id="ring-stacks" type="range" min="1" max="100" step="1" value="3"> 100</li>
+    <li>sub division 6 <input id="ring-subdiv" type="range" min="6" max="30" step="1" value="12"> 30</li>
+
   </div>
 
   <label>

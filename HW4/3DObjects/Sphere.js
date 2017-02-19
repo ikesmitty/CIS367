@@ -19,10 +19,6 @@ class Sphere {
         let vertices = [];
         this.vbuff = gl.createBuffer();
 
-        /* Instead of allocating two separate JS arrays (one for position and one for color),
-         in the following loop we pack both position and color
-         so each tuple (x,y,z,r,g,b) describes the properties of a vertex
-         */
 
         for(let i = 0; i <= latLines; i ++) {
             let theta = i * Math.PI / latLines;

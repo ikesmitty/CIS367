@@ -9,7 +9,6 @@ class Cube {
 
         this.cubeVerticesBuffer = gl.createBuffer();
 
-
         gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVerticesBuffer);
 
         var vertices = [];
