@@ -106,10 +106,9 @@ function createObject() {
       break;
     case 2:
       /* TODO: obtain user input parameters and create the object */
-      height = document.getElementById("cube-height").valueAsNumber;
-      width = document.getElementById("cube-width").valueAsNumber;
+      size = document.getElementById("cube-size").valueAsNumber;
       div = document.getElementById("cube-subdiv").valueAsNumber;
-      obj = new Cube(gl, height, width, div);
+      obj = new Cube(gl, size, div);
       break;
     case 3:
       /* TODO: obtain user input parameters and create the object */
